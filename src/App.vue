@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <notifications position="bottom center" group="admin"/>
     <nav class="navbar">
       <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
@@ -12,44 +13,47 @@
         </div>
       </div>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu" v-bind:class="{'is-active' : burger}">
+      <div class="navbar-menu" v-bind:class="{'is-active' : burger}">
         <div class="navbar-start">
-          <a class="navbar-item" href="https://bulma.io/">
+          <router-link class="navbar-item" to="/">
             Home
-          </a>
+          </router-link>
           <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link" href="/documentation/overview/start/">
+            <router-link class="navbar-link" to="/newsletters">
               Newsletters
-            </a>
+            </router-link>
             <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item" href="/documentation/overview/start/">
+              <router-link class="navbar-item" to="/">
                 Announcements
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">
+              </router-link>
+              <router-link class="navbar-item" to="/">
                 Columns
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">
+              </router-link>
+              <router-link class="navbar-item" to="/">
                 Layout
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/form/general/">
+              </router-link>
+              <router-link class="navbar-item" to="/">
                 Form
-              </a>
+              </router-link>
               <hr class="navbar-divider">
-              <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">
+              <router-link class="navbar-item" to="/">
                 Elements
-              </a>
-              <a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">
+              </router-link>
+              <router-link class="navbar-item is-active" to="/">
                 Components
-              </a>
+              </router-link>
             </div>
           </div>
+          <router-link class="navbar-item" to="/admin" v-if="$store.getters.isAuthenticated">
+            Admin
+          </router-link>
         </div>
 
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="field is-grouped">
               <p class="control">
-                <a class="button">
+                <a target="_blank" href="https://donate.kesem.org/campaign/friends-of-camp-kesem-at-the-claremont-colleges-fy-2018/c142249" class="button">
                   <span class="icon">
                     <i class="fa fa-gift"></i>
                   </span>
@@ -77,12 +81,22 @@
     <footer class="footer is-primary">
       <div class="container">
         <div class="columns">
-          <img id="footer-logo" src="/static/logo-white.png">
-          <p>And this right here is a spiffy footer, where you can put stuff.</p>
-        </div>
-        <div class="column has-text-right">
-          <a class="icon" href="#"><i class="fa fa-facebook"></i></a>
-          <a class="icon" href="#"><i class="fa fa-twitter"></i></a>
+          <div class="column">
+            <img id="footer-logo" src="/static/logo-white.png">
+            <p>And this right here is a spiffy footer, where you can put stuff.</p>
+          </div>
+          <div class="column">
+            <ul>
+              <li><router-link to="/">Home</router-link></li>
+              <li><router-link to="/newsletters">Newsletters</router-link></li>
+              <li v-if="!$store.getters.isAuthenticated"><router-link to="/login">Login</router-link></li>
+              <li v-if="$store.getters.isAuthenticated"><a href="/logout" @click.prevent="logout">Logout</a></li>
+            </ul>
+          </div>
+          <div class="column has-text-right">
+            <a target="_blank" class="icon" href="https://www.facebook.com/campkesemclaremont/"><i class="fa fa-facebook"></i></a>
+            <a target="_blank" class="icon" href="https://www.instagram.com/campkesemclaremont/"><i class="fa fa-instagram"></i></a>
+          </div>
         </div>
       </div>
     </footer>
@@ -96,6 +110,14 @@ export default {
     return {
       burger: false
     }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    }
+  },
+  created () {
+    this.$store.dispatch('tryAutoLogin')
   }
 }
 </script>
@@ -103,6 +125,13 @@ export default {
 <style lang="sass">
 @import 'mq'
 @import '../node_modules/bulma/bulma.sass'
+
+h1
+  font-size: 2.5rem
+h2
+  font-size: 2rem
+h3
+  font-size: 1.5rem
 
 #app
   display: flex
@@ -124,7 +153,7 @@ export default {
     &:hover
       background-color: black
 
-footer
+footer.footer
   background-color: $primary !important
   color: #fff
 
@@ -133,4 +162,10 @@ footer
   .icon
     color: #fff
     margin-left: 20px
+  li a
+    color: white
+
+.notification
+  background-color: $secondary
+
 </style>
