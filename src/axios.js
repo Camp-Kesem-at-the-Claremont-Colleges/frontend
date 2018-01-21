@@ -3,7 +3,7 @@ import axios from 'axios'
 let base = 'http://localhost:8000'
 
 if (process.env.NODE_ENV === 'production') {
-  base = 'http://api.campkesemclaremont.us'
+  base = 'http://data.campkesemclaremont.us'
 }
 
 console.log(process.env.NODE_ENV)
