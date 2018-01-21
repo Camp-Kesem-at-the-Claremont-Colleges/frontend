@@ -95,9 +95,19 @@ export default {
       formData.append('bio', this.user.bio)
       axios.patch(`/api/profile/${this.$store.state.id}/`, formData, this.$store.getters.getAuthorizationHeader)
         .then(res => {
-          console.log('success')
+          this.$notify({
+            group: 'admin',
+            title: `Updated!`,
+            text: 'Your profile is now up to date.'
+          })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -105,6 +115,9 @@ export default {
       axios.get(`/api/profile/${vm.$store.state.id}/`, vm.$store.getters.getAuthorizationHeader)
         .then(res => {
           vm.user = res.data
+          if (vm.user.avatar) {
+            vm.imgSrc = vm.user.avatar
+          }
         })
         .catch(err => console.log(err))
     })

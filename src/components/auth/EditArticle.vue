@@ -239,7 +239,13 @@ export default {
           this.article.cover_photo = data
           this.isSaved = false
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
       })
     },
     getTags (search, loading) {
@@ -247,7 +253,13 @@ export default {
         .then(res => {
           this.tags = res.data.results
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
     },
     modifyTags (tags) {
       const modified = []
@@ -287,7 +299,13 @@ export default {
           this.isSaved = true
           this.$router.push(`/admin/edit/${res.data.slug}`)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
       } else {
         axios.post('/api/articles/', this.article, this.$store.getters.authorizationHeader)
         .then(res => {
@@ -299,7 +317,13 @@ export default {
           this.isSaved = true
           this.$router.push(`/admin/edit/${res.data.slug}`)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
       }
     },
     embedImageSource () {
@@ -322,7 +346,13 @@ export default {
           quill.insertEmbed(range.index, 'image', data.url)
           this.isSaved = false
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
     },
     setImage (files) {
       const file = files[0]

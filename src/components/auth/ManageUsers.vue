@@ -164,7 +164,13 @@ export default {
           })
           this.getUsers()
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
     }
   },
   created () {

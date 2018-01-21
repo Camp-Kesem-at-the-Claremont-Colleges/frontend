@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <notifications position="bottom center" group="admin"/>
+    <notifications position="bottom center" classes="notification-error" group="error"/>
     <nav class="navbar">
       <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
@@ -168,4 +169,7 @@ footer.footer
 .notification
   background-color: $secondary
 
+.notification-error
+  background-color: $danger
+  color: white
 </style>

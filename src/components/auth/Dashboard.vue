@@ -63,7 +63,13 @@ export default {
             text: text
           })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$notify({
+            group: 'error',
+            title: `Error`,
+            text: err.response.data.detail
+          })
+        })
     }
   },
   created () {
@@ -71,7 +77,13 @@ export default {
       .then(res => {
         this.articles = res.data.results
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.$notify({
+          group: 'error',
+          title: `Error`,
+          text: err.response.data.detail
+        })
+      })
   }
 }
 </script>
