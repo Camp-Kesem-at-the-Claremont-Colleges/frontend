@@ -91,9 +91,11 @@ export default {
     },
     updateUser () {
       const formData = new FormData()
-      formData.append('avatar', this.user.avatar)
+      if (this.user.avatar) {
+        formData.append('avatar', this.user.avatar)
+      }
       formData.append('bio', this.user.bio)
-      axios.patch(`/api/profile/${this.$store.state.id}/`, formData, this.$store.getters.getAuthorizationHeader)
+      axios.patch(`/api/profile/${this.$store.state.id}/`, formData, this.$store.getters.authorizationHeader)
         .then(res => {
           this.$notify({
             group: 'admin',
@@ -117,6 +119,7 @@ export default {
           vm.user = res.data
           if (vm.user.avatar) {
             vm.imgSrc = vm.user.avatar
+            vm.user.avatar = null
           }
         })
         .catch(err => console.log(err))

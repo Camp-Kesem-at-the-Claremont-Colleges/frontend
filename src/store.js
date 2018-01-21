@@ -35,7 +35,6 @@ export default new Vuex.Store({
         password: authData.password
       })
         .then(res => {
-          console.log(res)
           commit('authUser', {
             token: res.data.token,
             id: res.data.id,
