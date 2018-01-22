@@ -4,9 +4,9 @@
     <notifications position="bottom center" classes="notification-error" group="error"/>
     <nav class="navbar">
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <router-link class="navbar-item" to="/">
           <img src="/static/logo.png" id="logo" height="200">
-        </a>
+        </router-link>
         <div class="navbar-burger burger" @click="burger = !burger" v-bind:class="{'is-active' : burger}">
           <span></span>
           <span></span>

@@ -21,7 +21,7 @@
           <div>
             Posted by {{ article.author.camp_name }}
           </div>
-          <span class="image is-128x128 inline-me">
+          <span class="image is-128x128 inline-me" v-if="article.author.avatar">
             <img class="profile-picture" :src="article.author.avatar">
           </span>
         </div>
