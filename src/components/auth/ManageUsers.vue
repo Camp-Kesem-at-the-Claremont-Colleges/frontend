@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="columns flex-me">
-        <div class="column is-6" v-for="user in users">
+        <div class="column is-6" v-for="user in users" :key="user.id">
           <div class="card">
             <div class="card-content">
               <div class="media">

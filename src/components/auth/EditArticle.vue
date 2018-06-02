@@ -417,54 +417,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import '../../mq'
+@import '../../ql'
 
 .dropdown
   display: block
-
-.hero
-  background-repeat: no-repeat
-  background-position: center
-  background-size: cover
-  background-color: #808080
-
-.hero-body
-  text-align: center
-
-.squeeze
-  width: 50%
-
-.title-container
-  +mobile
-    padding: 50px 0
-  +tablet
-    padding: 100px 0
-  +desktop
-    padding: 150px 0
-  h2
-    line-height: 1.5rem
-  h1
-    margin-bottom: 15px
-
-span.hero-subtitle
-  color: white
-  background: $primaryTransparent
-  +mobile
-    font-weight: bold
-  +tablet
-    font-size: 1.5rem
-  +desktop
-    margin-top: 2
-
-span.hero-title
-  background: $primaryTransparent
-  color: white
-  +mobile
-    font-weight: bold
-  +tablet
-    font-size: 3.5rem
-  +desktop
-    margin-top: 2
 
 .modal
   position: fixed

@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard">
     <div class="section">
-        <div class="columns" v-for="(article, i) in articles">
+        <div class="columns" v-for="article in articles" :key="article.slug">
           <div class="column is-8">
             <article class="media columns flex-me is-mobile">
               <figure class="media-left column is-full-mobile">
@@ -18,7 +18,7 @@
                     {{ article.blurb }}
                   </p>
                   <div>
-                    <span class="tag is-primary" v-for="tag in article.tags">{{ tag.label }}</span>
+                    <span class="tag is-primary" v-for="tag in article.tags" :key="tag.slug">{{ tag.label }}</span>
                   </div>
                 </div>
               </div>
