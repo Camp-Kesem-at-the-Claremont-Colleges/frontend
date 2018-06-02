@@ -12,7 +12,7 @@
     <div class="section">
       <div class="columns">
         <div class="column is-12">
-          <article class="media columns flex-me" v-for="article in articles">
+          <article class="media columns flex-me" v-for="article in articles" :key="article.slug">
             <figure class="media-left column is-full-mobile">
               <p class="image">
                 <router-link :to="`/article/${article.slug}`"><img class="cover_photo" :src="article.cover_photo.url"></router-link>
@@ -27,7 +27,7 @@
                   {{ article.blurb }}
                 </p>
                 <div>
-                  <span class="tag is-link" v-for="tag in article.tags">{{ tag.label }}</span>
+                  <span class="tag is-link" v-for="tag in article.tags" :key="tag.slug">{{ tag.label }}</span>
                 </div>
               </div>
               <router-link :to="`/article/${article.slug}`"><button class="button is-primary">Read More</button></router-link>
