@@ -17,28 +17,12 @@
           Home
         </router-link>
         <div class="navbar-item has-dropdown is-hoverable">
-          <router-link class="navbar-link" to="/newsletters">
+          <a class="navbar-link">
             Newsletters
-          </router-link>
+          </a>
           <div class="navbar-dropdown is-boxed">
-            <router-link class="navbar-item" to="/">
-              Announcements
-            </router-link>
-            <router-link class="navbar-item" to="/">
-              Columns
-            </router-link>
-            <router-link class="navbar-item" to="/">
-              Layout
-            </router-link>
-            <router-link class="navbar-item" to="/">
-              Form
-            </router-link>
-            <hr class="navbar-divider">
-            <router-link class="navbar-item" to="/">
-              Elements
-            </router-link>
-            <router-link class="navbar-item is-active" to="/">
-              Components
+            <router-link v-for="slug in slugs" :key="slug.slug" class="navbar-item" :to="`/article/${slug.slug}`">
+              {{ slug.title }}
             </router-link>
           </div>
         </div>
@@ -76,7 +60,27 @@
 </template>
 
 <script>
+import axios from '@/axios'
+
 export default {
-  name: 'Navigation'
+  name: 'Navigation',
+  data () {
+    return {
+      burger: false,
+      slugs: []
+    }
+  },
+  methods: {
+    getArticles () {
+      axios.get('/api/articles/list/slugs')
+        .then(res => {
+          this.slugs = res.data.results
+        })
+        .catch(err => console.log(err))
+    }
+  },
+  created () {
+    this.getArticles()
+  }
 }
 </script>

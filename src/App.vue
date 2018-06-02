@@ -20,11 +20,6 @@ export default {
     'ck-footer': Footer,
     'ck-nav': Navigation
   },
-  data () {
-    return {
-      burger: false
-    }
-  },
   methods: {
     logout () {
       this.$store.dispatch('logout')
@@ -39,13 +34,6 @@ export default {
 <style lang="sass">
 @import 'mq'
 @import '../node_modules/bulma/bulma.sass'
-
-h1
-  font-size: 2.5rem
-h2
-  font-size: 2rem
-h3
-  font-size: 1.5rem
 
 #app
   display: flex
