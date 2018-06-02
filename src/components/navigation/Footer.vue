@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getArticles () {
-      axios.get('/api/articles/list/slugs')
+      axios.get('/api/articles/list/slugs/')
         .then(res => {
           this.slugs = res.data.results
         })

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from '../../axios'
+import axios from '@/axios'
 import vSelect from 'vue-select'
 import VueCropper from 'vue-cropperjs'
 

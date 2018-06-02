@@ -9,14 +9,12 @@
               <div class="control">
                 <input class="input" type="text" placeholder="Username" v-model="credentials.username">
               </div>
-              <p class="help">This is a help text</p>
             </div>
             <div class="field">
               <label class="label">Password</label>
               <div class="control">
                 <input class="input" type="password" placeholder="Password" v-model="credentials.password">
               </div>
-              <p class="help">This is a help text</p>
             </div>
             <button class="button is-primary" @click.prevent="onSubmit">Login</button>
           </form>
@@ -37,9 +35,6 @@ export default {
       }
     }
   },
-  created () {
-    console.log(this.$store.state.token)
-  },
   methods: {
     onSubmit () {
       this.$store.dispatch('login', {
@@ -53,6 +48,4 @@ export default {
 
 <style lang="sass">
 @import '../mq'
-
-
 </style>

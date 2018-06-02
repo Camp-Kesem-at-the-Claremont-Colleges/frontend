@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import axios from '../../axios'
+import axios from '@/axios'
 import vSelect from 'vue-select'
 import VueCropper from 'vue-cropperjs'
 
@@ -185,13 +185,10 @@ export default {
     VueCropper,
     'comments': Comments
   },
-  created () {
-    console.log(this.article)
-  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (vm.$route.params.slug) {
-        axios.get('/api/articles/' + vm.$route.params.slug + '/', vm.$store.getters.authorizationHeader)
+        axios.get(`/api/articles/${vm.$route.params.slug}/`, vm.$store.getters.authorizationHeader)
         .then(res => {
           vm.article = res.data
           vm.article.image = vm.article.cover_photo.id

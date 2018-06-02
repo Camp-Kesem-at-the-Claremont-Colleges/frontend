@@ -50,7 +50,7 @@ export default {
     }
   },
   created () {
-    axios.get('/api/articles/list/published')
+    axios.get('/api/articles/list/published/')
       .then(res => {
         this.articles = res.data.results
       })

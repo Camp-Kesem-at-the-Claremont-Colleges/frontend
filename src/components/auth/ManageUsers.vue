@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import axios from '../../axios'
+import axios from '@/axios'
 import vSelect from 'vue-select'
 
 export default {
