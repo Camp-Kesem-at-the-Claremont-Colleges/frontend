@@ -39,12 +39,10 @@ export default new Router({
         },
         {
           path: 'new-post',
-          name: 'EditArticle',
           component: EditArticle
         },
         {
           path: 'edit/:slug',
-          name: 'EditArticle',
           component: EditArticle
         },
         {

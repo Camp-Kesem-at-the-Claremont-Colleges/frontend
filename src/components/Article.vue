@@ -13,16 +13,18 @@
       </section>
       <div class="section">
         <div class="columns">
-          <div class="column is-10 is-offset-1 ql-container ql-snow">
+          <div id="article-content" class="column is-10 is-offset-1 ql-container ql-snow">
             <div class="ql-editor" v-html="article.content"></div>
           </div>
         </div>
+        <hr>
         <div class="has-text-centered">
           <div>
             Posted by {{ article.author.camp_name }}
           </div>
-          <span class="image is-128x128 inline-me" v-if="article.author.avatar">
-            <img class="profile-picture" :src="article.author.avatar">
+          <span class="inline-me" v-if="article.author.avatar">
+            <img class="image profile-picture" :src="article.author.avatar">
+            <p class="subtitle">{{ article.author.bio }}</p>
           </span>
         </div>
       </div>
@@ -31,10 +33,6 @@
 </template>
 
 <script>
-import '../../node_modules/quill/dist/quill.core.css'
-import '../../node_modules/quill/dist/quill.snow.css'
-import '../../node_modules/quill/dist/quill.bubble.css'
-
 import axios from '../axios'
 export default {
   name: 'Article',
@@ -76,7 +74,7 @@ export default {
 .squeeze
   width: 50%
 
-.ql-container.ql-snow
+#article-content
   border: none
 
 .title-container
@@ -114,7 +112,10 @@ span.hero-title
 span.inline-me
   display: inline-block
 
-img.profile-picture
+.profile-picture
   border-radius: 100%
   border: 5px solid $primary
+  max-height: 250px
+  margin-bottom: 1rem
 </style>
+

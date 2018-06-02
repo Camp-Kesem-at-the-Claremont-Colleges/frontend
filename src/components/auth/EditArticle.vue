@@ -90,6 +90,9 @@
               <span class="ql-formats">
               <button class="ql-clean"></button>
               </span>
+              <span class="ql-formats">
+                <button id="comment"><i class="fa fa-comment" @click="commentHighlight"></i></button>
+              </span>
             </div>
             <input type="file" accept="image/*" id="quill-image" class="is-hidden" ref="image" @change="quillUpload($event.target)">
             <quill-editor ref="editor" v-model="article.content" :options="editorOption"></quill-editor>
@@ -97,6 +100,11 @@
               <button class="button is-primary m-t-15" @click.prevent="saveArticle">Save Article</button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-10 is-offset-1">
+          <comments :id="article.id"></comments>
         </div>
       </div>
     </div>
@@ -107,6 +115,9 @@
 import axios from '../../axios'
 import vSelect from 'vue-select'
 import VueCropper from 'vue-cropperjs'
+
+import Comments from './Comments'
+
 // require styles
 import '../../../node_modules/quill/dist/quill.core.css'
 import '../../../node_modules/quill/dist/quill.snow.css'
@@ -115,6 +126,23 @@ import '../../../node_modules/quill/dist/quill.bubble.css'
 import { quillEditor, Quill } from 'vue-quill-editor'
 import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageResize', ImageResize)
+
+const Inline = Quill.import('blots/inline')
+class Comment extends Inline {
+  static create (value) {
+    let node = super.create()
+    node.setAttribute('comment-id', value.id)
+    node.setAttribute('comment', value.comment)
+    return node
+  }
+
+  static formats () {
+    return true
+  }
+}
+Comment.blotName = 'comment'
+Comment.tagName = 'span'
+Comment.className = 'comment'
 
 const BaseImageFormat = Quill.import('formats/image')
 const ImageFormatAttributesList = [
@@ -147,13 +175,18 @@ class ImageFormat extends BaseImageFormat {
 }
 
 Quill.register(ImageFormat, true)
+Quill.register(Comment)
 
 export default {
   name: 'Article',
   components: {
     quillEditor,
     vSelect,
-    VueCropper
+    VueCropper,
+    'comments': Comments
+  },
+  created () {
+    console.log(this.article)
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -226,6 +259,14 @@ export default {
     }
   },
   methods: {
+    commentHighlight () {
+      const quill = this.$refs.editor.quill
+      quill.format('comment', {
+        id: 1,
+        comment: 'could be better'
+      })
+      console.log('hello')
+    },
     cropPhoto () {
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
         let file = new File([blob], this.imgName, {type: blob.type, lastModified: Date.now()})
@@ -378,7 +419,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../mq'
 
 .dropdown
@@ -459,3 +500,4 @@ span.hero-title
 .m-t-15
   margin-top: 15px
 </style>
+

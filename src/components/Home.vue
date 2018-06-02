@@ -22,7 +22,7 @@
               <div class="content">
                 <router-link :to="`/article/${article.slug}`"><h2 class="media-title">{{ article.title }}</h2></router-link>
                 <p>
-                  <small>Posted by {{ article.author.camp_name }}</small> <small>{{ article.date_created | moment("from", "now") }}</small>
+                  <small>Posted by {{ article.author.camp_name }}</small> <small>{{ article.date_created | moment('from', 'now') }}</small>
                   <br>
                   {{ article.blurb }}
                 </p>
