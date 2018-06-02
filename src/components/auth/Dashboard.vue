@@ -73,7 +73,7 @@ export default {
     }
   },
   created () {
-    axios.get('/api/articles', this.$store.getters.authorizationHeader)
+    axios.get('/api/articles/', this.$store.getters.authorizationHeader)
       .then(res => {
         this.articles = res.data.results
       })
