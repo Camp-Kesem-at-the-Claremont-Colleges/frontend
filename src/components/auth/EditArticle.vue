@@ -90,9 +90,6 @@
               <span class="ql-formats">
               <button class="ql-clean"></button>
               </span>
-              <span class="ql-formats">
-                <button id="comment"><i class="fa fa-comment" @click="commentHighlight"></i></button>
-              </span>
             </div>
             <input type="file" accept="image/*" id="quill-image" class="is-hidden" ref="image" @change="quillUpload($event.target)">
             <quill-editor ref="editor" v-model="article.content" :options="editorOption"></quill-editor>
@@ -127,23 +124,6 @@ import { quillEditor, Quill } from 'vue-quill-editor'
 import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageResize', ImageResize)
 
-const Inline = Quill.import('blots/inline')
-class Comment extends Inline {
-  static create (value) {
-    let node = super.create()
-    node.setAttribute('comment-id', value.id)
-    node.setAttribute('comment', value.comment)
-    return node
-  }
-
-  static formats () {
-    return true
-  }
-}
-Comment.blotName = 'comment'
-Comment.tagName = 'span'
-Comment.className = 'comment'
-
 const BaseImageFormat = Quill.import('formats/image')
 const ImageFormatAttributesList = [
   'alt',
@@ -175,7 +155,6 @@ class ImageFormat extends BaseImageFormat {
 }
 
 Quill.register(ImageFormat, true)
-Quill.register(Comment)
 
 export default {
   name: 'Article',
@@ -256,14 +235,6 @@ export default {
     }
   },
   methods: {
-    commentHighlight () {
-      const quill = this.$refs.editor.quill
-      quill.format('comment', {
-        id: 1,
-        comment: 'could be better'
-      })
-      console.log('hello')
-    },
     cropPhoto () {
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
         let file = new File([blob], this.imgName, {type: blob.type, lastModified: Date.now()})
