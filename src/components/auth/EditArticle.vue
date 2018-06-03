@@ -164,22 +164,6 @@ export default {
     VueCropper,
     'comments': Comments
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      if (vm.$route.params.slug) {
-        axios.get(`/api/articles/${vm.$route.params.slug}/`, vm.$store.getters.authorizationHeader)
-        .then(res => {
-          vm.article = res.data
-          vm.article.image = vm.article.cover_photo.id
-          vm.imgName = vm.article.cover_photo.url.split('media/images/')[1]
-          vm.imgSrc = vm.article.cover_photo.url
-        })
-        .catch(error => console.log(error))
-        vm.editing = true
-      }
-      next()
-    })
-  },
   data () {
     return {
       scrolled: false,
@@ -241,6 +225,13 @@ export default {
   beforeDestroy () {
     window.removeEventListener('scroll', this.handleScroll)
   },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (vm.$route.params.slug) {
+        vm.getArticle(vm.$route.params.slug)
+      }
+    })
+  },
   methods: {
     handleScroll () {
       if (this.$refs.content.getBoundingClientRect().top < -5) {
@@ -248,6 +239,17 @@ export default {
       } else {
         this.scrolled = false
       }
+    },
+    getArticle (slug) {
+      axios.get(`/api/articles/${slug}/`, this.$store.getters.authorizationHeader)
+        .then(res => {
+          this.article = res.data
+          this.article.image = this.article.cover_photo.id
+          this.imgName = this.article.cover_photo.url.split('media/images/')[1]
+          this.imgSrc = this.article.cover_photo.url
+        })
+        .catch(error => console.log(error))
+        this.editing = true
     },
     cropPhoto () {
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
