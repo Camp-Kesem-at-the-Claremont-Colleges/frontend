@@ -5,7 +5,7 @@
         <div class="container squeeze">
           <div class="title-container">
             <h1><span class="title hero-title" contenteditable="true" ref="title" v-on:blur="updateInput('title')">{{ article.title }}</span></h1>
-            <h2><span  contenteditable="true" class="subtitle hero-subtitle" ref="blurb" v-on:blur="updateInput('blurb')">{{ article.blurb }}</span></h2>
+            <h2><span contenteditable="true" class="subtitle hero-subtitle" ref="blurb" v-on:blur="updateInput('blurb')">{{ article.blurb }}</span></h2>
           </div>
         </div>
         <input type="file" accept="image/*" id="hero-image" class="is-hidden" ref="upload" @change="setImage($event.target.files)">
@@ -46,8 +46,8 @@
                 :options="tags"
                 placeholder="Add tags here!"></v-select>
           </div>
-          <div class="m-t-15">
-            <div id="toolbar">
+          <div class="m-t-15" ref="content">
+            <div id="toolbar" class="ql-toolbar ql-snow" v-bind:class="{'is-fixed' : scrolled}">
               <span class="ql-formats">
               <select class="ql-font"></select>
               <select class="ql-size"></select>
@@ -164,24 +164,9 @@ export default {
     VueCropper,
     'comments': Comments
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      if (vm.$route.params.slug) {
-        axios.get(`/api/articles/${vm.$route.params.slug}/`, vm.$store.getters.authorizationHeader)
-        .then(res => {
-          vm.article = res.data
-          vm.article.image = vm.article.cover_photo.id
-          vm.imgName = vm.article.cover_photo.url.split('media/images/')[1]
-          vm.imgSrc = vm.article.cover_photo.url
-        })
-        .catch(error => console.log(error))
-        vm.editing = true
-      }
-      next()
-    })
-  },
   data () {
     return {
+      scrolled: false,
       article: {
         blurb: 'Write a short description here.',
         content: null,
@@ -234,7 +219,38 @@ export default {
       return ''
     }
   },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (vm.$route.params.slug) {
+        vm.getArticle(vm.$route.params.slug)
+      }
+    })
+  },
   methods: {
+    handleScroll () {
+      if (this.$refs.content.getBoundingClientRect().top < -5) {
+        this.scrolled = true
+      } else {
+        this.scrolled = false
+      }
+    },
+    getArticle (slug) {
+      axios.get(`/api/articles/${slug}/`, this.$store.getters.authorizationHeader)
+        .then(res => {
+          this.article = res.data
+          this.article.image = this.article.cover_photo.id
+          this.imgName = this.article.cover_photo.url.split('media/images/')[1]
+          this.imgSrc = this.article.cover_photo.url
+        })
+        .catch(error => console.log(error))
+        this.editing = true
+    },
     cropPhoto () {
       this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
         let file = new File([blob], this.imgName, {type: blob.type, lastModified: Date.now()})
@@ -389,6 +405,14 @@ export default {
 
 <style lang="sass" scoped>
 @import '../../ql'
+
+.is-fixed
+  position: fixed
+  top: 0
+  background: white
+  z-index: 100
+  width: 100%
+  left: 0
 
 .dropdown
   display: block
