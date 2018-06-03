@@ -50,12 +50,21 @@ export default {
       return ''
     }
   },
+  methods: {
+    getArticle (slug) {
+      axios.get(`/api/articles/${slug}/`, this.$store.getters.authorizationHeader)
+        .then(res => {
+          this.article = res.data
+        })
+        .catch(err => console.log(err))
+    }
+  },
   created () {
-    axios.get(`/api/articles/${this.$route.params.slug}/`, this.$store.getters.authorizationHeader)
-      .then(res => {
-        this.article = res.data
-      })
-      .catch(err => console.log(err))
+    this.getArticle(this.$route.params.slug)
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.getArticle(to.params.slug)
+    next()
   }
 }
 </script>
